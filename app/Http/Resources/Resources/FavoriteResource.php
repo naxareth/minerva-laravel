@@ -20,6 +20,7 @@ class FavoriteResource extends JsonResource
             'title' => $this->title,
             'image' => $this->image,
             'created_at' => $this->created_at,
+            'user_id' => $this->user_id,
 
         ];
         

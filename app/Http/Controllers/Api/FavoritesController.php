@@ -11,9 +11,9 @@ use Illuminate\Support\Facades\Validator;
 
 class FavoritesController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        $favorites = Favorite::get();
+        $favorites = Favorite::where('user_id',$request->user()->id)->get();
         if ($favorites->count() > 0)
         {
             return FavoriteResource::collection($favorites);
@@ -25,31 +25,32 @@ class FavoritesController extends Controller
     }
 
     public function store(Request $request)
-    {   
-        $validator = Validator::make($request->all(),[
-                'id' => 'required|string|max:255',
-                'title' => 'required|string|max:255',
-                'image' => 'required|string|max:255',
-    ]);
-    if($validator->fails())
     {
-        return response()->json([
-            'message' => 'All fields are required',
-            'error'=>$validator->messages(),
-        ],422);
-    }
-      
+
+        $validator = Validator::make($request->all(), [
+            'id' => 'required|string|max:255',
+            'title' => 'required|string|max:255',
+            'image' => 'required|string|max:255',
+        ]);
+    
+        if ($validator->fails()) {
+            return response()->json([
+                'message' => 'All fields are required',
+                'error' => $validator->messages(),
+            ], 422);
+        }
+    
         $favorite = Favorite::create([
             'id' => $request->id,
             'title' => $request->title,
             'image' => $request->image,
+            'user_id' => $request->user()->id,  // Link the favorite to the logged-in user
         ]);
-
+    
         return response()->json([
-            'message'=>'Favorite added',
-            'data' => new FavoriteResource($favorite)
-            ],200);
-        
+            'message' => 'Favorite added',
+            'data' => new FavoriteResource($favorite),
+        ], 200);
     }
     public function show(Favorite $favorite)
     {
