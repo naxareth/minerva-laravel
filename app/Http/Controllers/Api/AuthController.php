@@ -39,18 +39,19 @@ public function register(Request $request): JsonResponse
 {
     $request->validate([
         'name' => 'required|string|max:255',
-        'email' => 'required|email|max:255',
-        'password' => 'required|string|min:8|max:255',
+        'email' => 'required|email|max:255|unique:users,email', // Ensure email is unique
+        'password' => 'required|string|min:8|max:255|confirmed', // Use confirmed rule
     ]);
 
+    // Create user
     $user = User::create([
         'name' => $request->name,
         'email' => $request->email,
-        'password' => Hash::make($request->password),
+        'password' => Hash::make($request->password), // Hash the password
     ]);
 
     if ($user) {
-        // The second argument is now an array of abilities
+        // Generate token
         $token = $user->createToken($user->name, ['*'])->plainTextToken;
 
         return response()->json([
@@ -64,7 +65,6 @@ public function register(Request $request): JsonResponse
         'message' => 'Something went wrong during registration.',
     ], 500);
 }
-
 
 public function logout(Request $request)
 {
