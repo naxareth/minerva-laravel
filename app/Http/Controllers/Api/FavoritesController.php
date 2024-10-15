@@ -81,11 +81,18 @@ class FavoritesController extends Controller
         'data' => new FavoriteResource($favorite)
         ],200);
     }
-    public function destroy(Favorite $favorite)
+    public function destroy($id)
     {
-        $favorite->delete();
-        return response()->json([
-            'message'=> 'Favorite deleted.'
-        ],200);
+        $favorite = Favorite::find($id);
+        if ($favorite) {
+            $favorite->delete();
+            return response()->json([
+                'message'=> 'Favorite deleted.'
+            ],200);
+        } else {
+            return response()->json([
+                'message'=> 'Favorite not found.'
+            ],404);
+        }
     }
 }

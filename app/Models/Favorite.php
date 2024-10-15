@@ -11,6 +11,12 @@ class Favorite extends Model
 
     protected $table = 'favorites';
 
+    // Specify the primary key
+    protected $primaryKey = 'id';
+
+    // Disable auto-incrementing
+    public $incrementing = false;
+
     protected $fillable = [
         'id',
         'title',
