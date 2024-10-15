@@ -12,7 +12,7 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('favorites', function (Blueprint $table) {
-            $table->string('id')->primary();
+            $table->string('id')->primary(); // Change the data type to string
             $table->string('title');
             $table->string('image');
             $table->timestamps();

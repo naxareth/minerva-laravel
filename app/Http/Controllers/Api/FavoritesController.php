@@ -26,9 +26,8 @@ class FavoritesController extends Controller
 
     public function store(Request $request)
     {
-
         $validator = Validator::make($request->all(), [
-            'id' => 'required|string|max:255',
+            'id' => 'required|string|max:255', 
             'title' => 'required|string|max:255',
             'image' => 'required|string|max:255',
         ]);
@@ -44,7 +43,7 @@ class FavoritesController extends Controller
             'id' => $request->id,
             'title' => $request->title,
             'image' => $request->image,
-            'user_id' => $request->user()->id,  // Link the favorite to the logged-in user
+            'user_id' => $request->user()->id,
         ]);
     
         return response()->json([

@@ -15,6 +15,7 @@ Route::middleware(['auth:sanctum'])->group(function(){
     Route::post('/logout',[AuthController::class,'logout']);
     Route::get('/profile',[AuthController::class,'profile']);
     Route::apiResource('favorites', FavoritesController::class);
+    Route::delete('/favorites/{favorite}',[FavoritesController::class,'destroy']);
 });
 
 Route::get('/user', function (Request $request) {
