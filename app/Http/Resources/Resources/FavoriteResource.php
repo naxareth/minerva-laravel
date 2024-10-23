@@ -15,11 +15,12 @@ class FavoriteResource extends JsonResource
     public function toArray($request)
     {
         return [
-            'id' => $this->id,
+            'anime_id' => $this->anime_id,
             'title' => $this->title,
             'image' => $this->image,
             'user_id' => $this->user_id,
             'created_at' => $this->created_at,
+            'updated_at' => $this->updated_at,
         ];
     }
 }
