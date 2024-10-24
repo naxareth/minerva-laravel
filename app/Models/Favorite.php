@@ -11,19 +11,20 @@ class Favorite extends Model
 
     protected $table = 'favorites';
 
-    // Specify the primary key
-    protected $primaryKey = 'id';
+    // Specify the primary key as an array for composite keys
+    protected $primaryKey = ['user_id', 'anime_id'];
 
     // Disable auto-incrementing
     public $incrementing = false;
 
     protected $fillable = [
-        'id',
+        'user_id',
+        'anime_id', // Include anime_id for the composite key
         'title',
         'image',
-        'user_id',
     ];
 
+    // Define the relationship with the User model
     public function user()
     {
         return $this->belongsTo(User::class);

@@ -12,11 +12,14 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('favorites', function (Blueprint $table) {
-            $table->string('id')->primary(); // Change the data type to string
+            $table->foreignId('user_id')->constrained()->onDelete('cascade');
+            $table->string('anime_id'); // Store the anime's ID
             $table->string('title');
             $table->string('image');
             $table->timestamps();
-            $table->foreignId('user_id')->constrained()->onDelete('cascade');
+        
+            // Composite unique constraint
+            $table->primary(['user_id', 'anime_id']); // Composite primary key
         });
     }
 
