@@ -20,32 +20,32 @@ class PasswordRecoveryController extends Controller
         $request->validate([
             'email' => 'required|email',
         ]);
-
+    
         $user = User::where('email', $request->email)->first();
-
+    
         if (!$user) {
             return response()->json([
                 'message' => 'User  not found',
             ], 404);
         }
-
+    
+        // Delete the existing OTP if it exists
+        Otp::where('email', $request->email)->delete();
+    
         $otp = Str::random(6); // Generate a random 6-character OTP
         $expiresAt = now()->addMinutes(10); // Set expiration time
-
-        // Create OTP entry
+    
+        // Create a new OTP entry
         Otp::create([
             'email' => $request->email,
             'otp' => $otp,
             'created_at' => now(),
             'expires_at' => $expiresAt,
         ]);
-
+    
         // Send the OTP to the user's email
-        // Use Laravel Mail or a third-party service for sending emails
-        // Example: Mail::to($request->email)->send(new OtpMail($otp));
-
         Mail::to($request->email)->send(new OtpMail($otp));
-
+    
         return response()->json([
             'message' => 'OTP sent successfully',
         ], 200);
